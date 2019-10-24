@@ -1,5 +1,7 @@
 from abc import abstractmethod
 from typing import Generic
+
+from typing import GenericMeta
 from typing import Iterable
 from typing import Optional
 from typing import TypeVar
@@ -8,11 +10,23 @@ T = TypeVar('T')
 K = TypeVar('K')
 
 
-class Repository(Generic[T, K]):
+class RepositoryGenericMeta(GenericMeta):
+    def __init__(cls, name, bases, attr, **kwargs):
+        args = bases[0].__args__
+        if not args:
+            return
+        if len(args) != 2:
+            raise TypeError(f'Repository class takes exactly 2 generic parameters, {len(args)} were given: {args}')
+        cls.__entity_cls__ = args[0]
+        cls.__primary_key_type__ = args[1]
+        super(RepositoryGenericMeta, cls).__init__(name, bases, attr, **kwargs)
+
+
+class Repository(Generic[T, K], metaclass=RepositoryGenericMeta):
     pass
 
 
-class CRUDRepository(Repository, Generic[T, K]):
+class CRUDRepository(Repository[T, K]):
     @abstractmethod
     def count(self) -> int:
         pass
