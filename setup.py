@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="persipy",
-    version="0.0.2",
+    version="0.0.3",
     author="Pavel V. Pristupa",
     author_email="pristupa@gmail.com",
     description="Persistence API for Python",
