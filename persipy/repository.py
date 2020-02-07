@@ -64,6 +64,10 @@ class CRUDRepository(Repository[T, K]):
         pass
 
     @abstractmethod
+    def get_by_id(self, id_: K) -> T:
+        pass
+
+    @abstractmethod
     def save(self, entity: T) -> T:
         pass
 
